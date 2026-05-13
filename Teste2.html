@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+:root{
+ --primary:#6c5ce7;
+ --success:#00b894;
+ --error:#ff7675;
+ --bg:#fff4b8;
+ --yellow:#ffeaa7;
+}
+
+*{
+ box-sizing:border-box;
+ font-family:'Segoe UI',sans-serif;
+}
+
+body{
+ margin:0;
+ background:linear-gradient(135deg,#fff7c9,#ffe680);
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ min-height:100vh;
+ padding:15px;
+ overflow-x:hidden;
+}
+
+/* SPLASH */
+
+.splash{
+ position:fixed;
+ inset:0;
+ background:url('fundo.png') center center/cover no-repeat;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ z-index:9999;
+ animation:sumir .8s ease 3s forwards;
+ padding:20px;
+}
+
+.splash-box{
+ text-align:center;
+ animation:pulse 1s infinite;
+ width:100%;
+ max-width:500px;
+ position:relative;
+}
+
+.splash-box img{
+ width:100%;
+ max-width:400px;
+ height:auto;
+}
+
+.splash-box p{
+ position:absolute;
+ top:105%;
+ left:50%;
+ transform:translateX(-50%);
+ font-size:1.2rem;
+ color:#ffffff;
+ font-weight:bold;
+ text-align:center;
+ width:100%;
+ text-shadow:0 3px 8px rgba(0,0,0,.45);
+}
+
+@keyframes sumir{
+ to{
+  opacity:0;
+  visibility:hidden;
+ }
+}
+
+@keyframes pulse{
+ 50%{
+  transform:scale(1.03);
+ }
+}
+
+/* GAME */
+
+.game{
+ background:#fff;
+ border-radius:25px;
+ box-shadow:0 15px 35px rgba(0,0,0,.18);
+ padding:25px 20px;
+ max-width:650px;
+ width:100%;
+ text-align:center;
+ opacity:0;
+ animation:aparecer .5s ease 3.2s forwards;
+ position:relative;
+ overflow:hidden;
+}
+
+@keyframes aparecer{
+ to{
+  opacity:1;
+ }
+}
+
+.lara{
+ width:140px;
+ position:absolute;
+ top:-30px;
+ left:-10px;
+ animation:balanco 2s infinite;
+}
+
+@keyframes balanco{
+ 50%{
+  transform:rotate(-5deg);
+ }
+}
+
+.score{
+ position:absolute;
+ top:15px;
+ right:15px;
+ background:#00b894;
+ color:#fff;
+ padding:10px 16px;
+ border-radius:30px;
+ font-weight:bold;
+ font-size:1rem;
+}
+
+h2{
+ margin-top:80px;
+ font-size:1.8rem;
+ line-height:1.3;
+ color:#333;
+}
+
+p{
+ line-height:1.5;
+ font-size:1rem;
+ color:#444;
+}
+
+#word-image{
+ font-size:5rem;
+ cursor:pointer;
+ margin:15px 0;
+}
+
+.word-display{
+ font-size:3rem;
+ font-weight:bold;
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ min-height:90px;
+ align-items:center;
+ flex-wrap:wrap;
+}
+
+.drop-zone{
+ width:65px;
+ height:80px;
+ border:3px dashed #bbb;
+ border-radius:12px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ font-size:2rem;
+ background:#fafafa;
+}
+
+.options{
+ display:flex;
+ justify-content:center;
+ gap:15px;
+ flex-wrap:wrap;
+ margin-top:20px;
+}
+
+.letter-card{
+ width:55px;
+ height:65px;
+ background:var(--primary);
+ color:#fff;
+ font-size:1.6rem;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ border-radius:10px;
+ cursor:grab;
+ user-select:none;
+ transition:.2s;
+}
+
+.letter-card:hover{
+ transform:scale(1.08);
+}
+
+.feedback{
+ margin-top:15px;
+ padding:12px;
+ border-radius:12px;
+ font-weight:bold;
+}
+
+.hidden{
+ display:none;
+}
+
+.success{
+ background:#d4edda;
+}
+
+.error{
+ background:#f8d7da;
+}
+
+button{
+ margin-top:18px;
+ padding:12px 30px;
+ border:none;
+ border-radius:40px;
+ background:var(--success);
+ color:#fff;
+ font-size:1rem;
+ cursor:pointer;
+ width:auto;
+ max-width:100%;
+}
+
+/* MODAL */
+
+.modal-overlay{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.50);
+ display:none;
+ justify-content:center;
+ align-items:center;
+ z-index:5000;
+ padding:20px;
+}
+
+.modal{
+ width:420px;
+ max-width:95%;
+ background:linear-gradient(180deg,#ffffff,#fff8d6);
+ border-radius:30px;
+ padding:28px 24px;
+ text-align:center;
+ position:relative;
+ box-shadow:0 20px 45px rgba(0,0,0,.25);
+ border:4px solid #ffe680;
+ animation:modalEntrada .25s ease;
+}
+
+@keyframes modalEntrada{
+ from{
+   transform:scale(.85);
+   opacity:0;
+ }
+ to{
+   transform:scale(1);
+   opacity:1;
+ }
+}
+
+.modal-close{
+ position:absolute;
+ top:12px;
+ right:12px;
+ width:34px;
+ height:34px;
+ border:none;
+ border-radius:50%;
+ background:#ff7675;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
+ margin:0;
+ padding:0;
+}
+
+.modal h2{
+ color:#5a4a00;
+ margin-top:10px;
+ font-size:1.4rem;
+}
+
+.modal img{
+ max-width:230px;
+ width:100%;
+ border-radius:22px;
+ cursor:pointer;
+ border:5px solid #fff;
+ box-shadow:0 10px 25px rgba(0,0,0,.18);
+ background:#fff;
+}
+
+.audio-box{
+ margin-top:18px;
+ background:#fff;
+ border-radius:18px;
+ padding:12px;
+ color:#000000;
+ font-size:1.1rem;
+ font-weight:bold;
+ box-shadow:0 5px 15px rgba(0,0,0,.08);
+ cursor:pointer;
+ transition:.2s;
+}
+
+.audio-box:hover{
+ transform:scale(1.03);
+}
+
+/* RESPONSIVO */
+
+@media (max-width:768px){
+
+ .game{
+  padding:20px 15px;
+ }
+
+ .lara{
+  width:100px;
+  top:-15px;
+  left:-5px;
+ }
+
+ .score{
+  position:relative;
+  top:auto;
+  right:auto;
+  margin:0 auto 15px auto;
+  display:inline-block;
+ }
+
+ h2{
+  margin-top:20px;
+  font-size:1.4rem;
+ }
+
+ p{
+  font-size:.95rem;
+ }
+
+ #word-image{
+  font-size:4rem;
+ }
+
+ .word-display{
+  font-size:2.2rem;
+  gap:8px;
+ }
+
+ .drop-zone{
+  width:55px;
+  height:70px;
+  font-size:1.7rem;
+ }
+
+ .letter-card{
+  width:50px;
+  height:60px;
+  font-size:1.4rem;
+ }
+
+ .splash-box p{
+  font-size:1rem;
+ }
+
+ .modal{
+  padding:22px 16px;
+ }
+
+ .audio-box{
+  font-size:1rem;
+ }
+}
+
+@media (max-width:480px){
+
+ body{
+  padding:10px;
+ }
+
+ h2{
+  font-size:1.2rem;
+ }
+
+ p{
+  font-size:.9rem;
+ }
+
+ #word-image{
+  font-size:3.2rem;
+ }
+
+ .word-display{
+  font-size:1.8rem;
+ }
+
+ .drop-zone{
+  width:48px;
+  height:60px;
+  font-size:1.5rem;
+ }
+
+ .letter-card{
+  width:45px;
+  height:55px;
+  font-size:1.2rem;
+ }
+
+ button{
+  width:100%;
+ }
+
+ .splash-box p{
+  top:102%;
+  font-size:.9rem;
+ }
+
+ .score{
+  font-size:.9rem;
+  padding:8px 14px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="splash">
+ <div class="splash-box">
+   <img src="titulo.png">
+   <p>PREPARANDO A AVENTURA...</p>
+ </div>
+</div>
+
+<div class="game">
+
+ <img src="Gemini_Generated_Image_bklsrdbklsrdbkls.png" class="lara">
+
+ <div class="score">
+   ⭐ Pontos: <span id="score">0</span>
+ </div>
+
+ <h2>
+  A ARARA LARA ESTÁ TROCANDO
+  <br>O SOM DAS PALAVRINHAS!
+ </h2>
+
+ <p>
+  ARRASTE OU CLIQUE NA LETRA CORRETA PARA AJUDAR A LARA A
+  COMPLETAR AS PALAVRAS ABAIXO E DEPOIS REPITA O SOM.
+ </p>
+
+ <p>🎵 CLIQUE NA FIGURA PARA OUVIR O SOM 🎵</p>
+
+ <div id="word-image">🌙</div>
+
+ <div id="word-display" class="word-display">
+  <div class="drop-zone">?</div>
+  <span>UA</span>
+ </div>
+
+ <div id="options-container" class="options">
+  <div class="letter-card">L</div>
+  <div class="letter-card">R</div>
+  <div class="letter-card">B</div>
+ </div>
+
+ <div id="feedback" class="feedback hidden"></div>
+
+ <button id="next-btn" class="hidden">
+  Próxima Palavra
+ </button>
+
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+
+ <div class="modal">
+
+   <button class="modal-close" onclick="fecharModal()">
+    X
+   </button>
+
+   <div class="modal-silaba" id="modalSilaba"></div>
+
+   <img id="modalImagem" src="lua.jpg" onclick="tocarSomFonema()">
+
+   <div class="audio-box" onclick="tocarSomFonema()">
+     🔊 Toque para ouvir a palavra
+   </div>
+
+ </div>
+
+</div>
+
+<script>
+const applause = new Audio('https://www.soundjay.com/human/applause-8.mp3');
+
+const wordData = [
+ {
+   image:'🌙',
+   palavraCompleta:'LUA',
+   structure:['', 'U', 'A'],
+   correct:['L'],
+   options:['L','R','B'],
+   audioText:'lua',
+   silaba:'LUA',
+   modalImg:'lua.jpg'
+ },
+ {
+   image:'💬',
+   palavraCompleta:'FALA',
+   structure:['', 'A', 'L', 'A'],
+   correct:['F'],
+   options:['B','F','C'],
+   audioText:'fala',
+   silaba:'FALA',
+   modalImg:'fala.jpg'
+ },
+ {
+   image:'🛣️',
+   palavraCompleta:'RUA',
+   structure:['', 'U', 'A'],
+   correct:['R'],
+   options:['T','P','R'],
+   audioText:'rua',
+   silaba:'RUA',
+   modalImg:'rua.jpg'
+ },
+ {
+   image:'👆',
+   palavraCompleta:'DEDO',
+   structure:['', 'E', '', 'O'],
+   correct:['D','D'],
+   options:['T','D','P'],
+   audioText:'dedo',
+   silaba:'DEDO',
+   modalImg:'dedo.jpg'
+ },
+ {
+   image:'🎲',
+   palavraCompleta:'DADO',
+   structure:['', 'A', '', 'O'],
+   correct:['D','D'],
+   options:['T','D','P'],
+   audioText:'dado',
+   silaba:'DADO',
+   modalImg:'dado.jpg'
+ },
+ {
+   image:'⚽',
+   palavraCompleta:'BOLA',
+   structure:['', 'O', 'L', 'A'],
+   correct:['B'],
+   options:['P','C','B'],
+   audioText:'bola',
+   silaba:'BOLA',
+   modalImg:'BOLA.jpg'
+ },
+ {
+   image:'🕯️',
+   palavraCompleta:'VELA',
+   structure:['', 'E', 'L', 'A'],
+   correct:['V'],
+   options:['V','P','B'],
+   audioText:'vela',
+   silaba:'VELA',
+   modalImg:'VELA.jpg'
+ }
+];
+
+let currentIndex = 0;
+let pontos = 0;
+let silabaAtual = '';
+
+const wordDisplay = document.getElementById('word-display');
+const optionsContainer = document.getElementById('options-container');
+const nextBtn = document.getElementById('next-btn');
+const wordImage = document.getElementById('word-image');
+const feedbackDiv = document.getElementById('feedback');
+
+function falar(txt, rate=.82, pitch=1.15){
+
+ speechSynthesis.cancel();
+
+ let u = new SpeechSynthesisUtterance(txt);
+
+ u.lang = 'pt-BR';
+ u.rate = rate;
+ u.pitch = pitch;
+
+ let v = speechSynthesis.getVoices().find(a => a.lang.includes('pt'));
+
+ if(v) u.voice = v;
+
+ speechSynthesis.speak(u);
+}
+
+function tocarSomFonema(){
+ falar(silabaAtual, .7, 1.2);
+}
+
+function abrirModal(data){
+
+ silabaAtual = data.silaba;
+
+ document.getElementById('modalSilaba').innerText = data.silaba;
+
+ document.getElementById('modalImagem').src = data.modalImg;
+
+ document.getElementById('modalOverlay').style.display = 'flex';
+
+ setTimeout(() => tocarSomFonema(), 400);
+}
+
+function fecharModal(){
+
+ document.getElementById('modalOverlay').style.display = 'none';
+
+ nextBtn.classList.remove('hidden');
+}
+
+function showFeedback(msg,type){
+
+ feedbackDiv.innerHTML = msg;
+
+ feedbackDiv.className = 'feedback ' + type;
+
+ feedbackDiv.classList.remove('hidden');
+
+ setTimeout(() => {
+  feedbackDiv.classList.add('hidden');
+ }, 2000);
+}
+
+function confetes(){
+
+ confetti({
+   particleCount:150,
+   spread:90,
+   origin:{y:0.6}
+ });
+}
+
+function createDropZone(index){
+
+ let z = document.createElement('div');
+
+ z.className = 'drop-zone';
+
+ z.innerText = '?';
+
+ z.dataset.index = index;
+
+ z.addEventListener('dragover', e => e.preventDefault());
+
+ z.addEventListener('drop', e => {
+
+   e.preventDefault();
+
+   checkLetter(e.dataTransfer.getData('text'));
+ });
+
+ return z;
+}
+
+function initGame(){
+
+ let data = wordData[currentIndex];
+
+ wordImage.innerText = data.image;
+
+ wordDisplay.innerHTML = '';
+
+ optionsContainer.innerHTML = '';
+
+ nextBtn.classList.add('hidden');
+
+ data.structure.forEach((item, index) => {
+
+   if(item === ''){
+
+     wordDisplay.appendChild(createDropZone(index));
+
+   } else {
+
+     let s = document.createElement('span');
+
+     s.innerText = item;
+
+     wordDisplay.appendChild(s);
+   }
+ });
+
+ data.options.forEach(letra => {
+
+   let b = document.createElement('div');
+
+   b.className = 'letter-card';
+
+   b.innerText = letra;
+
+   b.draggable = true;
+
+   b.ondragstart = e => e.dataTransfer.setData('text', letra);
+
+   b.onclick = () => checkLetter(letra);
+
+   optionsContainer.appendChild(b);
+ });
+}
+
+function checkLetter(letter){
+
+ let data = wordData[currentIndex];
+
+ if(data.correct.includes(letter)){
+
+   let zonas = document.querySelectorAll('.drop-zone');
+
+   zonas.forEach((zona, i) => {
+     zona.innerText = data.correct[i];
+   });
+
+   showFeedback(
+    '🎉 Muito bem! A Arara Lara adorou!',
+    'success'
+   );
+
+   falar('Muito bem');
+
+   applause.play();
+
+   confetes();
+
+   pontos += 10;
+
+   document.getElementById('score').innerText = pontos;
+
+   setTimeout(() => {
+
+     falar(data.palavraCompleta);
+
+     abrirModal(data);
+
+   }, 1000);
+
+ } else {
+
+   showFeedback(
+    '❌ Escute novamente e tente outra letra!',
+    'error'
+   );
+
+   falar('Tente novamente');
+ }
+}
+
+wordImage.onclick = () => {
+
+ falar(
+  wordData[currentIndex].audioText,
+  .85,
+  1.1
+ );
+};
+
+nextBtn.onclick = () => {
+
+ currentIndex = (currentIndex + 1) % wordData.length;
+
+ initGame();
+};
+
+setTimeout(initGame, 3200);
+</script>
+
+</body>
+</html>

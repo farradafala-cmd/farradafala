@@ -43,7 +43,7 @@ body{
  align-items:center;
  z-index:9999;
  animation:sumir .8s ease 3s forwards;
- padding:200px;
+ padding:20px;
 }
 
 .splash-box{
@@ -52,25 +52,27 @@ body{
  width:100%;
  max-width:700px;
  position:relative;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
 }
 
 .splash-box img{
- width:100%;
- max-width:400px;
+ width:min(90vw, 420px);
  height:auto;
+ object-fit:contain;
 }
 
 .splash-box p{
- position:absolute;
- top:125%;
- left:50%;
- transform:translateX(-50%);
- font-size:1.2rem;
- color:#fff;
+ margin-top:28px;
+ font-size:clamp(.95rem, 2.5vw, 1.4rem);
+ color:#000000;
  font-weight:bold;
  text-align:center;
  width:100%;
- text-shadow:0 3px 8px rgba(0,0,0,.45);
+ padding:0 10px;
+ letter-spacing:.5px;
 }
 
 @keyframes sumir{
@@ -376,6 +378,21 @@ button{
   height:60px;
   font-size:1.4rem;
  }
+
+ /* SPLASH RESPONSIVO */
+
+ .splash{
+  padding:16px;
+ }
+
+ .splash-box img{
+  width:min(88vw, 340px);
+ }
+
+ .splash-box p{
+  margin-top:24px;
+  font-size:1rem;
+ }
 }
 
 /* CELULAR PORTRAIT */
@@ -437,9 +454,24 @@ button{
   padding:8px 14px;
  }
 
+ /* SPLASH CELULAR */
+
+ .splash{
+  padding:12px;
+ }
+
+ .splash-box{
+  width:100%;
+ }
+
+ .splash-box img{
+  width:min(92vw, 280px);
+ }
+
  .splash-box p{
-  top:102%;
-  font-size:.9rem;
+  margin-top:22px;
+  font-size:.95rem;
+  line-height:1.4;
  }
 }
 
@@ -513,6 +545,25 @@ button{
   margin-top:10px;
   padding:10px 18px;
   font-size:.9rem;
+ }
+
+ /* SPLASH LANDSCAPE */
+
+ .splash{
+  padding:10px;
+ }
+
+ .splash-box{
+  max-width:500px;
+ }
+
+ .splash-box img{
+  width:min(70vw, 240px);
+ }
+
+ .splash-box p{
+  margin-top:16px;
+  font-size:.8rem;
  }
 }
 

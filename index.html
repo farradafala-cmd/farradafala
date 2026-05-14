@@ -7,6 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
+
 :root{
  --primary:#6c5ce7;
  --success:#00b894;
@@ -27,7 +28,7 @@ body{
  justify-content:center;
  align-items:center;
  min-height:100vh;
- padding:15px;
+ padding:20px;
  overflow-x:hidden;
 }
 
@@ -42,14 +43,14 @@ body{
  align-items:center;
  z-index:9999;
  animation:sumir .8s ease 3s forwards;
- padding:20px;
+ padding:200px;
 }
 
 .splash-box{
  text-align:center;
  animation:pulse 1s infinite;
  width:100%;
- max-width:500px;
+ max-width:700px;
  position:relative;
 }
 
@@ -61,11 +62,11 @@ body{
 
 .splash-box p{
  position:absolute;
- top:105%;
+ top:125%;
  left:50%;
  transform:translateX(-50%);
  font-size:1.2rem;
- color:#ffffff;
+ color:#fff;
  font-weight:bold;
  text-align:center;
  width:100%;
@@ -89,16 +90,17 @@ body{
 
 .game{
  background:#fff;
- border-radius:25px;
+ border-radius:28px;
  box-shadow:0 15px 35px rgba(0,0,0,.18);
- padding:25px 20px;
- max-width:650px;
+ padding:30px 22px;
+ padding-top:95px;
+ max-width:680px;
  width:100%;
  text-align:center;
  opacity:0;
  animation:aparecer .5s ease 3.2s forwards;
  position:relative;
- overflow:hidden;
+ overflow:visible;
 }
 
 @keyframes aparecer{
@@ -107,35 +109,41 @@ body{
  }
 }
 
+/* IMAGEM RESPONSIVA */
+
 .lara{
- width:140px;
+ width:clamp(40px, 18vw, 180px);
  position:absolute;
- top:-30px;
- left:-10px;
- animation:balanco 2s infinite;
+ top:0px;
+ left:-55px;
+ z-index:20;
+ pointer-events:none;
+ animation:balanco 2s infinite ease-in-out;
+ filter:drop-shadow(0 8px 15px rgba(0,0,0,.18));
 }
 
 @keyframes balanco{
  50%{
-  transform:rotate(-5deg);
+  transform:rotate(-6deg);
  }
 }
 
 .score{
  position:absolute;
- top:15px;
- right:15px;
+ top:18px;
+ right:18px;
  background:#00b894;
  color:#fff;
  padding:10px 16px;
  border-radius:30px;
  font-weight:bold;
  font-size:1rem;
+ z-index:5;
 }
 
 h2{
- margin-top:80px;
- font-size:1.8rem;
+ margin-top:10px;
+ font-size:1.9rem;
  line-height:1.3;
  color:#333;
 }
@@ -287,12 +295,6 @@ button{
  padding:0;
 }
 
-.modal h2{
- color:#5a4a00;
- margin-top:10px;
- font-size:1.4rem;
-}
-
 .modal img{
  max-width:230px;
  width:100%;
@@ -308,7 +310,7 @@ button{
  background:#fff;
  border-radius:18px;
  padding:12px;
- color:#000000;
+ color:#000;
  font-size:1.1rem;
  font-weight:bold;
  box-shadow:0 5px 15px rgba(0,0,0,.08);
@@ -320,18 +322,23 @@ button{
  transform:scale(1.03);
 }
 
-/* RESPONSIVO */
+/* TABLET */
 
 @media (max-width:768px){
 
+ body{
+  padding:14px;
+ }
+
  .game{
-  padding:20px 15px;
+  padding:22px 16px;
+  padding-top:80px;
  }
 
  .lara{
-  width:100px;
-  top:-15px;
-  left:-5px;
+  width:120px;
+  top:-48px;
+  left:-22px;
  }
 
  .score{
@@ -343,8 +350,7 @@ button{
  }
 
  h2{
-  margin-top:20px;
-  font-size:1.4rem;
+  font-size:1.5rem;
  }
 
  p{
@@ -357,7 +363,6 @@ button{
 
  .word-display{
   font-size:2.2rem;
-  gap:8px;
  }
 
  .drop-zone{
@@ -371,19 +376,9 @@ button{
   height:60px;
   font-size:1.4rem;
  }
-
- .splash-box p{
-  font-size:1rem;
- }
-
- .modal{
-  padding:22px 16px;
- }
-
- .audio-box{
-  font-size:1rem;
- }
 }
+
+/* CELULAR PORTRAIT */
 
 @media (max-width:480px){
 
@@ -391,8 +386,21 @@ button{
   padding:10px;
  }
 
+ .game{
+  padding:18px 14px;
+  padding-top:72px;
+  border-radius:24px;
+ }
+
+ .lara{
+  width:95px;
+  top:-38px;
+  left:-12px;
+ }
+
  h2{
   font-size:1.2rem;
+  line-height:1.4;
  }
 
  p{
@@ -405,6 +413,7 @@ button{
 
  .word-display{
   font-size:1.8rem;
+  gap:8px;
  }
 
  .drop-zone{
@@ -423,16 +432,90 @@ button{
   width:100%;
  }
 
- .splash-box p{
-  top:102%;
-  font-size:.9rem;
- }
-
  .score{
   font-size:.9rem;
   padding:8px 14px;
  }
+
+ .splash-box p{
+  top:102%;
+  font-size:.9rem;
+ }
 }
+
+/* LANDSCAPE CELULAR */
+
+@media (max-height:500px) and (orientation:landscape){
+
+ body{
+  padding:8px;
+  align-items:flex-start;
+ }
+
+ .game{
+  max-width:95vw;
+  padding:18px 18px 22px;
+  padding-top:60px;
+ }
+
+ .lara{
+  width:82px;
+  top:-30px;
+  left:-5px;
+ }
+
+ .score{
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-size:.75rem;
+  padding:6px 10px;
+ }
+
+ h2{
+  font-size:1rem;
+  margin-top:5px;
+ }
+
+ p{
+  font-size:.78rem;
+  margin:8px 0;
+ }
+
+ #word-image{
+  font-size:2.3rem;
+  margin:8px 0;
+ }
+
+ .word-display{
+  font-size:1.5rem;
+  min-height:55px;
+ }
+
+ .drop-zone{
+  width:40px;
+  height:50px;
+  font-size:1.2rem;
+ }
+
+ .letter-card{
+  width:38px;
+  height:46px;
+  font-size:1rem;
+ }
+
+ .options{
+  gap:10px;
+  margin-top:12px;
+ }
+
+ button{
+  margin-top:10px;
+  padding:10px 18px;
+  font-size:.9rem;
+ }
+}
+
 </style>
 </head>
 
@@ -507,6 +590,7 @@ button{
 </div>
 
 <script>
+
 const applause = new Audio('https://www.soundjay.com/human/applause-8.mp3');
 
 const wordData = [
@@ -519,66 +603,6 @@ const wordData = [
    audioText:'lua',
    silaba:'LUA',
    modalImg:'lua.jpg'
- },
- {
-   image:'💬',
-   palavraCompleta:'FALA',
-   structure:['', 'A', 'L', 'A'],
-   correct:['F'],
-   options:['B','F','C'],
-   audioText:'fala',
-   silaba:'FALA',
-   modalImg:'fala.jpg'
- },
- {
-   image:'🛣️',
-   palavraCompleta:'RUA',
-   structure:['', 'U', 'A'],
-   correct:['R'],
-   options:['T','P','R'],
-   audioText:'rua',
-   silaba:'RUA',
-   modalImg:'rua.jpg'
- },
- {
-   image:'👆',
-   palavraCompleta:'DEDO',
-   structure:['', 'E', '', 'O'],
-   correct:['D','D'],
-   options:['T','D','P'],
-   audioText:'dedo',
-   silaba:'DEDO',
-   modalImg:'dedo.jpg'
- },
- {
-   image:'🎲',
-   palavraCompleta:'DADO',
-   structure:['', 'A', '', 'O'],
-   correct:['D','D'],
-   options:['T','D','P'],
-   audioText:'dado',
-   silaba:'DADO',
-   modalImg:'dado.jpg'
- },
- {
-   image:'⚽',
-   palavraCompleta:'BOLA',
-   structure:['', 'O', 'L', 'A'],
-   correct:['B'],
-   options:['P','C','B'],
-   audioText:'bola',
-   silaba:'BOLA',
-   modalImg:'BOLA.jpg'
- },
- {
-   image:'🕯️',
-   palavraCompleta:'VELA',
-   structure:['', 'E', 'L', 'A'],
-   correct:['V'],
-   options:['V','P','B'],
-   audioText:'vela',
-   silaba:'VELA',
-   modalImg:'VELA.jpg'
  }
 ];
 
@@ -786,6 +810,7 @@ nextBtn.onclick = () => {
 };
 
 setTimeout(initGame, 3200);
+
 </script>
 
 </body>
